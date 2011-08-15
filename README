@@ -1,0 +1,10 @@
+Some scripts I use.
+
+cscope_gen.sh: Help to generate cscope cross-reference
+gitdiff.sh:    Used in gitconfig as external diff program
+valgrind.sh:   Help to invoke valgrind
+vt:            Help to access several specific kvm hosts and virtuals
+
+Config
+------
+Add clone repository directory to PATH.
