@@ -1,0 +1,116 @@
+#!/usr/bin/env python
+
+import sys
+import os
+import subprocess
+import collections
+
+alias_list = [('hm1', 'hm1', 'hm1', '22'),
+              ('hg1', 'hg1', 'hg1', '22'),
+              ('hg2', 'hg2', 'hg2', '22'),
+
+              ('vmx'   , 'hm1-1-vmx'   , 'hm1', '22'),
+              ('bzr'   , 'hm1-2-vbzr'  , 'hm1', '22'),
+              ('vqa'   , 'hm1-3-vqa'   , 'hm1', '22'),
+              ('v10000', 'hm1-4-v10000', 'hm1', '22'),
+              ('vmp'   , 'hm1-5-vmp'   , 'hm1', '22'),
+              ('vwwqa' , 'hm1-6-vwwqa' , 'hm1', '22'),
+              ('debqa' , 'hm1-7-vdebqa', 'hm1', '22'),
+              ('ldap'  , 'hm1-8-vldap' , 'hm1', '22'),
+              ('debu1' , 'hm1-9-vdebu1', 'hm1', '22'),
+
+              ('puppet', 'hg1-1-vpuppet', 'hg1', '22'),
+              ('10018b', 'hg1-2-v10018b', 'hg1', '22'),
+              ('10103' , 'hg1-3-v10103' , 'hg1', '22'),
+              ('10104' , 'hg1-4-v10104' , 'hg1', '22'),
+              ('10105' , 'hg1-5-v10105' , 'hg1', '22'),
+              ('10106' , 'hg1-6-v10106' , 'hg1', '22'),
+              ('10107' , 'hg1-7-v10107' , 'hg1', '22'),
+
+              ('boss'  , 'hg2-1-v10101'  , 'hg2', '22'),
+              ('demo'  , 'hg2-2-vdemo'   , 'hg2', '22'),
+              ('www'   , 'hg2-3-vwww'    , 'hg2', '22'),
+              ('boden' , 'hg2-4-boden'   , 'hg2', '22'),
+              ('matrix', 'hg2-5-vmatrix' , 'hg2', '22'),
+              ('flash' , 'hg2-7-vflash'  , 'hg2', '22'),
+              ('sbr'   , 'hg2-8-vsbr'    , 'hg2', '22'),
+              ('10070' , 'hg2-9-v10070'  , 'hg2', '22'),
+              ('10063b', 'hg2-10-v10063b', 'hg2', '22'),
+              ('ngibi' , 'hg2-11-vngibi' , 'hg2', '22'),
+              ('10083b', 'hg2-12-v10083b', 'hg2', '22'),
+              ('10018b', 'hg2-13-v10018b', 'hg2', '22'),
+
+              ('gray', 'mail.graystone.com.au', 'mail.graystone.com.au', '22208'),
+              ]
+
+
+class auto_dict(dict):
+    def __getitem__(self, item):
+        try:
+            return dict.__getitem__(self, item)
+        except KeyError:
+            value = self[item] = type(self)()
+            return value
+
+class Alias:
+    def __init__(self, alias_list):
+        self.alias = auto_dict()
+        for a in alias_list:
+            self.alias[a[0]]['virtual'] = a[1]
+            self.alias[a[0]]['host']    = a[2]
+            self.alias[a[0]]['port']    = a[3]
+
+    def __getitem__(self, item):
+        try:
+            return self.alias[item]
+        except KeyError:
+            pass
+
+def ls_host(host, port, user):
+    subprocess.call(['virsh', '-c', 'qemu+ssh://' + user + '@' + host + ':' + port + '/system', 'list --all'])
+
+def go_host(host, port, user):
+    subprocess.call(['virsh', '-c', 'qemu+ssh://' + user + '@' + host + ':' + port + '/system'])
+
+def view_virtual(host, port, virtual, user):
+    subprocess.call(['virt-viewer', '-c', 'qemu+ssh://' + user + '@' + host + ':' + port + '/system', virtual])
+
+def ssh_target(target, port, user):
+    subprocess.call(['ssh', '-X', '-p', port, user + '@' + target])
+
+def usage(prog):
+    print 'usage:', prog, '<command> <args>'
+    print '''The commands support are:
+    ls      List kvm virtuals on a kvm host    
+    go      Run virsh on a kvm host
+    view    Run virt-viewer access a kvm virtual
+    ssh     Ssh to ssh server'''
+
+
+def main():
+    alias = Alias(alias_list)
+
+    q = collections.deque(sys.argv)
+    prog = os.path.basename(q.popleft())
+
+    try:
+        cmd = q.popleft()
+        if cmd == 'ls':
+            a = q.popleft()
+            ls_host(alias[a]['host'], alias[a]['port'], 'ubuntu')
+        elif cmd == 'go':
+            a = q.popleft()
+            go_host(alias[a]['host'], alias[a]['port'], 'ubuntu')
+        elif cmd == 'view':
+            a = q.popleft()
+            view_virtual(alias[a]['host'], alias[a]['port'], alias[a]['virtual'], 'ubuntu')
+        elif cmd == 'ssh':
+            a = q.popleft()
+            u = q.popleft()
+            ssh_target(alias[a]['virtual'], alias[a]['port'], u)
+    except IndexError:
+        usage(prog)
+    
+if __name__ == '__main__':
+    main()
+
