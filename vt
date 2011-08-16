@@ -53,9 +53,9 @@ class auto_dict(dict):
             return value
 
 class Alias:
-    def __init__(self, alias_list):
+    def __init__(self, a_list):
         self.alias = auto_dict()
-        for a in alias_list:
+        for a in a_list:
             self.alias[a[0]]['virtual'] = a[1]
             self.alias[a[0]]['host']    = a[2]
             self.alias[a[0]]['port']    = a[3]
