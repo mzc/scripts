@@ -45,11 +45,11 @@ alias_list = [('hm1', 'hm1', 'hm1', '22'),
 
 
 class auto_dict(dict):
-    def __getitem__(self, item):
+    def __getitem__(self, key):
         try:
-            return dict.__getitem__(self, item)
+            return dict.__getitem__(self, key)
         except KeyError:
-            value = self[item] = type(self)()
+            value = self[key] = type(self)()
             return value
 
 class Alias:
@@ -60,9 +60,9 @@ class Alias:
             self.alias[a[0]]['host']    = a[2]
             self.alias[a[0]]['port']    = a[3]
 
-    def __getitem__(self, item):
+    def __getitem__(self, key):
         try:
-            return self.alias[item]
+            return self.alias[key]
         except KeyError:
             pass
 
@@ -85,7 +85,6 @@ def usage(prog):
     go      Run virsh on a kvm host
     view    Run virt-viewer access a kvm virtual
     ssh     Ssh to ssh server'''
-
 
 def main():
     alias = Alias(alias_list)
