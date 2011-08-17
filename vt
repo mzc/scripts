@@ -107,6 +107,8 @@ def main():
             a = q.popleft()
             u = q.popleft()
             ssh_target(alias[a]['virtual'], alias[a]['port'], u)
+        else:
+            raise IndexError
     except IndexError:
         usage(prog)
     
