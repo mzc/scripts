@@ -101,17 +101,15 @@ def main():
 
     try:
         cmd = q.popleft()
+        a = q.popleft()
+        h = alias[a]['host']
         if cmd == 'ls':
-            a = q.popleft()
-            ls_host(alias[a]['host'], alias[a]['port'], 'ubuntu')
+            ls_host(alias[a]['host'], alias[h]['port'], 'ubuntu')
         elif cmd == 'go':
-            a = q.popleft()
-            go_host(alias[a]['host'], alias[a]['port'], 'ubuntu')
+            go_host(alias[a]['host'], alias[h]['port'], 'ubuntu')
         elif cmd == 'view':
-            a = q.popleft()
-            view_real(alias[a]['host'], alias[a]['port'], alias[a]['real'], 'ubuntu')
+            view_real(alias[a]['host'], alias[h]['port'], alias[a]['real'], 'ubuntu')
         elif cmd == 'ssh':
-            a = q.popleft()
             u = q.popleft()
             ssh_target(alias[a]['real'], alias[a]['port'], u)
         else:
