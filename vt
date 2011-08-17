@@ -5,7 +5,7 @@ import os
 import subprocess
 import collections
 
-#              alias     virtual           host   port
+#              alias     real              host   port
 alias_list = [('hm1'   , 'hm1'           , 'hm1', '22'),
               ('hg1'   , 'hg1'           , 'hg1', '22'),
               ('hg2'   , 'hg2'           , 'hg2', '22'),
@@ -57,7 +57,7 @@ class Alias:
     def __init__(self, a_list):
         self.alias = auto_dict()
         for a in a_list:
-            self.alias[a[0]]['virtual'] = a[1]
+            self.alias[a[0]]['real'] = a[1]
             self.alias[a[0]]['host']    = a[2]
             self.alias[a[0]]['port']    = a[3]
 
@@ -73,8 +73,8 @@ def ls_host(host, port, user):
 def go_host(host, port, user):
     subprocess.call(['virsh', '-c', 'qemu+ssh://' + user + '@' + host + ':' + port + '/system'])
 
-def view_virtual(host, port, virtual, user):
-    subprocess.call(['virt-viewer', '-c', 'qemu+ssh://' + user + '@' + host + ':' + port + '/system', virtual])
+def view_real(host, port, real, user):
+    subprocess.call(['virt-viewer', '-c', 'qemu+ssh://' + user + '@' + host + ':' + port + '/system', real])
 
 def ssh_target(target, port, user):
     subprocess.call(['ssh', '-X', '-p', port, user + '@' + target])
@@ -82,7 +82,7 @@ def ssh_target(target, port, user):
 def usage(prog):
     print 'usage:', prog, '<command> <args>'
     print '''The commands support are:
-    ls      List kvm virtuals on a kvm host    
+    ls      List kvm virtual on a kvm host
     go      Run virsh on a kvm host
     view    Run virt-viewer access a kvm virtual
     ssh     Ssh to ssh server'''
@@ -109,11 +109,11 @@ def main():
             go_host(alias[a]['host'], alias[a]['port'], 'ubuntu')
         elif cmd == 'view':
             a = q.popleft()
-            view_virtual(alias[a]['host'], alias[a]['port'], alias[a]['virtual'], 'ubuntu')
+            view_real(alias[a]['host'], alias[a]['port'], alias[a]['real'], 'ubuntu')
         elif cmd == 'ssh':
             a = q.popleft()
             u = q.popleft()
-            ssh_target(alias[a]['virtual'], alias[a]['port'], u)
+            ssh_target(alias[a]['real'], alias[a]['port'], u)
         else:
             raise IndexError
     except IndexError:
