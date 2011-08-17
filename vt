@@ -5,27 +5,28 @@ import os
 import subprocess
 import collections
 
-alias_list = [('hm1', 'hm1', 'hm1', '22'),
-              ('hg1', 'hg1', 'hg1', '22'),
-              ('hg2', 'hg2', 'hg2', '22'),
+#              alias     virtual           host   port
+alias_list = [('hm1'   , 'hm1'           , 'hm1', '22'),
+              ('hg1'   , 'hg1'           , 'hg1', '22'),
+              ('hg2'   , 'hg2'           , 'hg2', '22'),
 
-              ('vmx'   , 'hm1-1-vmx'   , 'hm1', '22'),
-              ('bzr'   , 'hm1-2-vbzr'  , 'hm1', '22'),
-              ('vqa'   , 'hm1-3-vqa'   , 'hm1', '22'),
-              ('v10000', 'hm1-4-v10000', 'hm1', '22'),
-              ('vmp'   , 'hm1-5-vmp'   , 'hm1', '22'),
-              ('vwwqa' , 'hm1-6-vwwqa' , 'hm1', '22'),
-              ('debqa' , 'hm1-7-vdebqa', 'hm1', '22'),
-              ('ldap'  , 'hm1-8-vldap' , 'hm1', '22'),
-              ('debu1' , 'hm1-9-vdebu1', 'hm1', '22'),
+              ('vmx'   , 'hm1-1-vmx'     , 'hm1', '22'),
+              ('bzr'   , 'hm1-2-vbzr'    , 'hm1', '22'),
+              ('vqa'   , 'hm1-3-vqa'     , 'hm1', '22'),
+              ('v10000', 'hm1-4-v10000'  , 'hm1', '22'),
+              ('vmp'   , 'hm1-5-vmp'     , 'hm1', '22'),
+              ('vwwqa' , 'hm1-6-vwwqa'   , 'hm1', '22'),
+              ('debqa' , 'hm1-7-vdebqa'  , 'hm1', '22'),
+              ('ldap'  , 'hm1-8-vldap'   , 'hm1', '22'),
+              ('debu1' , 'hm1-9-vdebu1'  , 'hm1', '22'),
 
-              ('puppet', 'hg1-1-vpuppet', 'hg1', '22'),
-              ('10018b', 'hg1-2-v10018b', 'hg1', '22'),
-              ('10103' , 'hg1-3-v10103' , 'hg1', '22'),
-              ('10104' , 'hg1-4-v10104' , 'hg1', '22'),
-              ('10105' , 'hg1-5-v10105' , 'hg1', '22'),
-              ('10106' , 'hg1-6-v10106' , 'hg1', '22'),
-              ('10107' , 'hg1-7-v10107' , 'hg1', '22'),
+              ('puppet', 'hg1-1-vpuppet' , 'hg1', '22'),
+              ('10018b', 'hg1-2-v10018b' , 'hg1', '22'),
+              ('10103' , 'hg1-3-v10103'  , 'hg1', '22'),
+              ('10104' , 'hg1-4-v10104'  , 'hg1', '22'),
+              ('10105' , 'hg1-5-v10105'  , 'hg1', '22'),
+              ('10106' , 'hg1-6-v10106'  , 'hg1', '22'),
+              ('10107' , 'hg1-7-v10107'  , 'hg1', '22'),
 
               ('boss'  , 'hg2-1-v10101'  , 'hg2', '22'),
               ('demo'  , 'hg2-2-vdemo'   , 'hg2', '22'),
@@ -61,10 +62,10 @@ class Alias:
             self.alias[a[0]]['port']    = a[3]
 
     def __getitem__(self, key):
-        try:
-            return self.alias[key]
-        except KeyError:
-            pass
+        item = self.alias[key]
+        if item == {}:
+            raise KeyError
+        return item
 
 def ls_host(host, port, user):
     subprocess.call(['virsh', '-c', 'qemu+ssh://' + user + '@' + host + ':' + port + '/system', 'list --all'])
@@ -85,6 +86,12 @@ def usage(prog):
     go      Run virsh on a kvm host
     view    Run virt-viewer access a kvm virtual
     ssh     Ssh to ssh server'''
+
+def show_alias(a_list):
+    print "Supported:"
+    al = [a[0] for a in a_list]
+    for i in range(0, len(al), 7):
+        print al[i : i+7]
 
 def main():
     alias = Alias(alias_list)
@@ -111,7 +118,8 @@ def main():
             raise IndexError
     except IndexError:
         usage(prog)
+    except KeyError:
+        show_alias(alias_list)
     
 if __name__ == '__main__':
     main()
-
