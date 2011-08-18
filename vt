@@ -80,15 +80,21 @@ def ssh_target(target, port, user):
     subprocess.call(['ssh', '-X', '-p', port, user + '@' + target])
 
 def usage(prog):
-    print 'usage:', prog, '<command> <args>'
+    print 'usage:', prog, '<command> <args ...>'
     print '''The commands support are:
     ls      List kvm virtual on a kvm host
     go      Run virsh on a kvm host
     view    Run virt-viewer access a kvm virtual
     ssh     Ssh to ssh server'''
+    print
+    print 'Examples:'
+    print '   ', prog, 'ls   <host|virtual>'
+    print '   ', prog, 'go   <host|virtual>'
+    print '   ', prog, 'view <virtual>'
+    print '   ', prog, 'ssh  <host|virtual> <user>'
 
 def show_alias(a_list):
-    print "Supported:"
+    print "Supported host or virtual:"
     al = [a[0] for a in a_list]
     for i in range(0, len(al), 7):
         print al[i : i+7]
