@@ -7,6 +7,7 @@ import collections
 
 #              alias     real              host   port
 alias_list = [('hm1'   , 'hm1'           , 'hm1', '22'),
+              ('hm2'   , 'hm2'           , 'hm2', '22'),
               ('hg1'   , 'hg1'           , 'hg1', '22'),
               ('hg2'   , 'hg2'           , 'hg2', '22'),
 
@@ -19,6 +20,8 @@ alias_list = [('hm1'   , 'hm1'           , 'hm1', '22'),
               ('debqa' , 'hm1-7-vdebqa'  , 'hm1', '22'),
               ('ldap'  , 'hm1-8-vldap'   , 'hm1', '22'),
               ('debu1' , 'hm1-9-vdebu1'  , 'hm1', '22'),
+
+              ('dev'   , 'hm2-1-vdev'    , 'hm2', '22'),
 
               ('puppet', 'hg1-1-vpuppet' , 'hg1', '22'),
               ('10018b', 'hg1-2-v10018b' , 'hg1', '22'),
