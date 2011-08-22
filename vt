@@ -61,8 +61,8 @@ class Alias:
         self.alias = auto_dict()
         for a in a_list:
             self.alias[a[0]]['real'] = a[1]
-            self.alias[a[0]]['host']    = a[2]
-            self.alias[a[0]]['port']    = a[3]
+            self.alias[a[0]]['host'] = a[2]
+            self.alias[a[0]]['port'] = a[3]
 
     def __getitem__(self, key):
         item = self.alias[key]
@@ -97,10 +97,20 @@ def usage(prog):
     print '   ', prog, 'ssh  <host|virtual> <user>'
 
 def show_alias(a_list):
-    print "Supported host or virtual:"
+    print 'Supported host or virtual shortcut:'
     al = [a[0] for a in a_list]
     for i in range(0, len(al), 7):
         print al[i : i+7]
+
+def extend_user(u):
+    users = { 'r' : 'root', 'u' : 'ubuntu', 'm' : 'mulisu' }
+    try:
+        return users[u]
+    except KeyError:
+        print 'Supported user shortcut:'
+        print users
+        print
+        raise
 
 def main():
     alias = Alias(alias_list)
@@ -113,14 +123,14 @@ def main():
         a = q.popleft()
         h = alias[a]['host']
         if cmd == 'ls':
-            ls_host(alias[a]['host'], alias[h]['port'], 'ubuntu')
+            ls_host(alias[a]['host'], alias[h]['port'], extend_user('u'))
         elif cmd == 'go':
-            go_host(alias[a]['host'], alias[h]['port'], 'ubuntu')
+            go_host(alias[a]['host'], alias[h]['port'], extend_user('u'))
         elif cmd == 'view':
-            view_real(alias[a]['host'], alias[h]['port'], alias[a]['real'], 'ubuntu')
+            view_real(alias[a]['host'], alias[h]['port'], alias[a]['real'], extend_user('u'))
         elif cmd == 'ssh':
             u = q.popleft()
-            ssh_target(alias[a]['real'], alias[a]['port'], u)
+            ssh_target(alias[a]['real'], alias[a]['port'], extend_user(u))
         else:
             raise IndexError
     except IndexError:
