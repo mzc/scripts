@@ -127,6 +127,9 @@ def main():
         elif cmd == 'go':
             go_host(alias[a]['host'], alias[h]['port'], extend_user('u'))
         elif cmd == 'view':
+            # host doesn't support command 'view'
+            if alias[a]['host'] == alias[a]['real']:
+                raise IndexError
             view_real(alias[a]['host'], alias[h]['port'], alias[a]['real'], extend_user('u'))
         elif cmd == 'ssh':
             u = q.popleft()
