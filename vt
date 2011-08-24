@@ -47,7 +47,6 @@ alias_list = [('hm1'   , 'hm1'           , 'hm1', '22'),
               ('gray', 'mail.graystone.com.au', 'mail.graystone.com.au', '22208'),
               ]
 
-
 class auto_dict(dict):
     def __getitem__(self, key):
         try:
@@ -63,12 +62,17 @@ class Alias:
             self.alias[a[0]]['real'] = a[1]
             self.alias[a[0]]['host'] = a[2]
             self.alias[a[0]]['port'] = a[3]
+            self.alias[a[0]]['type'] = 'host' if a[1] == a[2] else 'virtual'
 
     def __getitem__(self, key):
         item = self.alias[key]
         if item == {}:
+            del self.alias[key]
             raise KeyError
         return item
+
+    def keys(self):
+        return self.alias.keys()
 
 def ls_host(host, port, user):
     subprocess.call(['virsh', '-c', 'qemu+ssh://' + user + '@' + host + ':' + port + '/system', 'list --all'])
@@ -81,6 +85,19 @@ def view_real(host, port, real, user):
 
 def ssh_target(target, port, user):
     subprocess.call(['ssh', '-X', '-p', port, user + '@' + target])
+
+def extend_user(u):
+    users = { 'r' : 'root', 'u' : 'ubuntu', 'm' : 'mulisu' }
+    try:
+        return users[u]
+    except KeyError:
+        print 'Supported user shortcut:'
+        print users
+        print
+        raise
+
+def is_host(a):
+    return a['type'] == 'host'
 
 def usage(prog):
     print 'usage:', prog, '<command> <args ...>'
@@ -96,21 +113,17 @@ def usage(prog):
     print '   ', prog, 'view <virtual>'
     print '   ', prog, 'ssh  <host|virtual> <user>'
 
-def show_alias(a_list):
-    print 'Supported host or virtual shortcut:'
-    al = [a[0] for a in a_list]
+def show_alias(alias):
+    print 'Supported host shortcut:'
+    al = [a for a in alias.keys() if is_host(alias[a])]
     for i in range(0, len(al), 7):
         print al[i : i+7]
 
-def extend_user(u):
-    users = { 'r' : 'root', 'u' : 'ubuntu', 'm' : 'mulisu' }
-    try:
-        return users[u]
-    except KeyError:
-        print 'Supported user shortcut:'
-        print users
-        print
-        raise
+    print
+    print 'Supported virtual shortcut:'
+    al = [a for a in alias.keys() if not is_host(alias[a])]
+    for i in range(0, len(al), 7):
+        print al[i : i+7]
 
 def main():
     alias = Alias(alias_list)
@@ -128,7 +141,7 @@ def main():
             go_host(alias[a]['host'], alias[h]['port'], extend_user('u'))
         elif cmd == 'view':
             # host doesn't support command 'view'
-            if alias[a]['host'] == alias[a]['real']:
+            if is_host(alias[a]):
                 raise IndexError
             view_real(alias[a]['host'], alias[h]['port'], alias[a]['real'], extend_user('u'))
         elif cmd == 'ssh':
@@ -139,7 +152,7 @@ def main():
     except IndexError:
         usage(prog)
     except KeyError:
-        show_alias(alias_list)
+        show_alias(alias)
     
 if __name__ == '__main__':
     main()
