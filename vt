@@ -47,17 +47,17 @@ alias_list = [('hm1'   , 'hm1'           , 'hm1', '22'),
               ('gray', 'mail.graystone.com.au', 'mail.graystone.com.au', '22208'),
               ]
 
-class auto_dict(dict):
-    def __getitem__(self, key):
-        try:
-            return dict.__getitem__(self, key)
-        except KeyError:
-            value = self[key] = type(self)()
-            return value
-
 class Alias:
+    class _auto_dict(dict):
+        def __getitem__(self, key):
+            try:
+                return dict.__getitem__(self, key)
+            except KeyError:
+                value = self[key] = type(self)()
+                return value
+
     def __init__(self, a_list):
-        self.alias = auto_dict()
+        self.alias = self._auto_dict()
         for a in a_list:
             self.alias[a[0]]['real'] = a[1]
             self.alias[a[0]]['host'] = a[2]
