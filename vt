@@ -10,18 +10,19 @@ alias_list = [('hm1'   , 'hm1'           , 'hm1', '22'),
               ('hm2'   , 'hm2'           , 'hm2', '22'),
               ('hg1'   , 'hg1'           , 'hg1', '22'),
               ('hg2'   , 'hg2'           , 'hg2', '22'),
+              ('grayh' , 'mail.graystone.com.au', 'mail.graystone.com.au', '22207'),
 
               ('vmx'   , 'hm1-1-vmx'     , 'hm1', '22'),
               ('bzr'   , 'hm1-2-vbzr'    , 'hm1', '22'),
               ('vqa'   , 'hm1-3-vqa'     , 'hm1', '22'),
-              ('v10000', 'hm1-4-v10000'  , 'hm1', '22'),
+              ('10000' , 'hm1-4-v10000'  , 'hm1', '22'),
               ('vmp'   , 'hm1-5-vmp'     , 'hm1', '22'),
-              ('vwwqa' , 'hm1-6-vwwqa'   , 'hm1', '22'),
+              ('wwqa'  , 'hm1-6-vwwqa'   , 'hm1', '22'),
               ('debqa' , 'hm1-7-vdebqa'  , 'hm1', '22'),
               ('ldap'  , 'hm1-8-vldap'   , 'hm1', '22'),
               ('debu1' , 'hm1-9-vdebu1'  , 'hm1', '22'),
 
-              ('dev'   , 'hm2-1-vdev'    , 'hm2', '22'),
+              ('imap'  , 'hm2-1-vimap'   , 'hm2', '22'),
 
               ('puppet', 'hg1-1-vpuppet' , 'hg1', '22'),
               ('10018b', 'hg1-2-v10018b' , 'hg1', '22'),
@@ -44,7 +45,7 @@ alias_list = [('hm1'   , 'hm1'           , 'hm1', '22'),
               ('10083b', 'hg2-12-v10083b', 'hg2', '22'),
               ('10018b', 'hg2-13-v10018b', 'hg2', '22'),
 
-              ('gray', 'mail.graystone.com.au', 'mail.graystone.com.au', '22208'),
+              ('gray'  , 'mail.graystone.com.au', 'grayh', '22208'),
               ]
 
 class Alias:
