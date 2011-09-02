@@ -5,47 +5,47 @@ import os
 import subprocess
 import collections
 
-#              alias     real              host   port
-alias_list = [('hm1'   , 'hm1'           , 'hm1', '22'),
-              ('hm2'   , 'hm2'           , 'hm2', '22'),
-              ('hg1'   , 'hg1'           , 'hg1', '22'),
-              ('hg2'   , 'hg2'           , 'hg2', '22'),
-              ('grayh' , 'mail.graystone.com.au', 'grayh', '22207'),
+#              alias     real              virsh             host   port
+alias_list = [('hm1'   , 'hm1'           , None           , 'hm1', '22'),
+              ('hm2'   , 'hm2'           , None           , 'hm2', '22'),
+              ('hg1'   , 'hg1'           , None           , 'hg1', '22'),
+              ('hg2'   , 'hg2'           , None           , 'hg2', '22'),
+                                          
+              ('vmx'   , 'hm1-1-vmx'     ,'hm1-1-vmx'     , 'hm1', '22'),
+              ('bzr'   , 'hm1-2-vbzr'    ,'hm1-2-vbzr'    , 'hm1', '22'),
+              ('vqa'   , 'hm1-3-vqa'     ,'hm1-3-vqa'     , 'hm1', '22'),
+              ('10000' , 'hm1-4-v10000'  ,'hm1-4-v10000'  , 'hm1', '22'),
+              ('vmp'   , 'hm1-5-vmp'     ,'hm1-5-vmp'     , 'hm1', '22'),
+              ('wwqa'  , 'hm1-6-vwwqa'   ,'hm1-6-vwwqa'   , 'hm1', '22'),
+              ('debqa' , 'hm1-7-vdebqa'  ,'hm1-7-vdebqa'  , 'hm1', '22'),
+              ('ldap'  , 'hm1-8-vldap'   ,'hm1-8-vldap'   , 'hm1', '22'),
+              ('debu1' , 'hm1-9-vdebu1'  ,'hm1-9-vdebu1'  , 'hm1', '22'),
+                                          
+              ('imap'  , 'hm2-1-vimap'   ,'hm2-1-vimap'   , 'hm2', '22'),
+                                          
+              ('puppet', 'hg1-1-vpuppet' ,'hg1-1-vpuppet' , 'hg1', '22'),
+              ('10018b', 'hg1-2-v10018b' ,'hg1-2-v10018b' , 'hg1', '22'),
+              ('10103' , 'hg1-3-v10103'  ,'hg1-3-v10103'  , 'hg1', '22'),
+              ('10104' , 'hg1-4-v10104'  ,'hg1-4-v10104'  , 'hg1', '22'),
+              ('10105' , 'hg1-5-v10105'  ,'hg1-5-v10105'  , 'hg1', '22'),
+              ('10106' , 'hg1-6-v10106'  ,'hg1-6-v10106'  , 'hg1', '22'),
+              ('10107' , 'hg1-7-v10107'  ,'hg1-7-v10107'  , 'hg1', '22'),
+                                          
+              ('boss'  , 'hg2-1-v10101'  ,'hg2-1-v10101'  , 'hg2', '22'),
+              ('demo'  , 'hg2-2-vdemo'   ,'hg2-2-vdemo'   , 'hg2', '22'),
+              ('www'   , 'hg2-3-vwww'    ,'hg2-3-vwww'    , 'hg2', '22'),
+              ('boden' , 'hg2-4-boden'   ,'hg2-4-boden'   , 'hg2', '22'),
+              ('matrix', 'hg2-5-vmatrix' ,'hg2-5-vmatrix' , 'hg2', '22'),
+              ('flash' , 'hg2-7-vflash'  ,'hg2-7-vflash'  , 'hg2', '22'),
+              ('sbr'   , 'hg2-8-vsbr'    ,'hg2-8-vsbr'    , 'hg2', '22'),
+              ('10070' , 'hg2-9-v10070'  ,'hg2-9-v10070'  , 'hg2', '22'),
+              ('10063b', 'hg2-10-v10063b','hg2-10-v10063b', 'hg2', '22'),
+              ('ngibi' , 'hg2-11-vngibi' ,'hg2-11-vngibi' , 'hg2', '22'),
+              ('10083b', 'hg2-12-v10083b','hg2-12-v10083b', 'hg2', '22'),
+              ('10018b', 'hg2-13-v10018b','hg2-13-v10018b', 'hg2', '22'),
 
-              ('vmx'   , 'hm1-1-vmx'     , 'hm1', '22'),
-              ('bzr'   , 'hm1-2-vbzr'    , 'hm1', '22'),
-              ('vqa'   , 'hm1-3-vqa'     , 'hm1', '22'),
-              ('10000' , 'hm1-4-v10000'  , 'hm1', '22'),
-              ('vmp'   , 'hm1-5-vmp'     , 'hm1', '22'),
-              ('wwqa'  , 'hm1-6-vwwqa'   , 'hm1', '22'),
-              ('debqa' , 'hm1-7-vdebqa'  , 'hm1', '22'),
-              ('ldap'  , 'hm1-8-vldap'   , 'hm1', '22'),
-              ('debu1' , 'hm1-9-vdebu1'  , 'hm1', '22'),
-
-              ('imap'  , 'hm2-1-vimap'   , 'hm2', '22'),
-
-              ('puppet', 'hg1-1-vpuppet' , 'hg1', '22'),
-              ('10018b', 'hg1-2-v10018b' , 'hg1', '22'),
-              ('10103' , 'hg1-3-v10103'  , 'hg1', '22'),
-              ('10104' , 'hg1-4-v10104'  , 'hg1', '22'),
-              ('10105' , 'hg1-5-v10105'  , 'hg1', '22'),
-              ('10106' , 'hg1-6-v10106'  , 'hg1', '22'),
-              ('10107' , 'hg1-7-v10107'  , 'hg1', '22'),
-
-              ('boss'  , 'hg2-1-v10101'  , 'hg2', '22'),
-              ('demo'  , 'hg2-2-vdemo'   , 'hg2', '22'),
-              ('www'   , 'hg2-3-vwww'    , 'hg2', '22'),
-              ('boden' , 'hg2-4-boden'   , 'hg2', '22'),
-              ('matrix', 'hg2-5-vmatrix' , 'hg2', '22'),
-              ('flash' , 'hg2-7-vflash'  , 'hg2', '22'),
-              ('sbr'   , 'hg2-8-vsbr'    , 'hg2', '22'),
-              ('10070' , 'hg2-9-v10070'  , 'hg2', '22'),
-              ('10063b', 'hg2-10-v10063b', 'hg2', '22'),
-              ('ngibi' , 'hg2-11-vngibi' , 'hg2', '22'),
-              ('10083b', 'hg2-12-v10083b', 'hg2', '22'),
-              ('10018b', 'hg2-13-v10018b', 'hg2', '22'),
-
-              ('gray'  , 'mail.graystone.com.au', 'grayh', '22208'),
+              ('grayh' , 'mail.graystone.com.au', None               , 'grayh', '22207'),
+              ('gray'  , 'mail.graystone.com.au', 'muli10023-v10023a', 'grayh', '22208'),
               ]
 
 class Alias:
@@ -60,10 +60,10 @@ class Alias:
     def __init__(self, a_list):
         self.alias = self._auto_dict()
         for a in a_list:
-            self.alias[a[0]]['real'] = a[1]
-            self.alias[a[0]]['host'] = a[2]
-            self.alias[a[0]]['port'] = a[3]
-            self.alias[a[0]]['type'] = 'host' if a[0] == a[2] else 'virtual'
+            self.alias[a[0]]['real']  = a[1]
+            self.alias[a[0]]['virsh'] = a[2]            
+            self.alias[a[0]]['host']  = a[3]
+            self.alias[a[0]]['port']  = a[4]
 
     def __getitem__(self, key):
         item = self.alias[key]
@@ -98,7 +98,7 @@ def extend_user(u):
         raise
 
 def is_host(alias, a):
-    return alias[a]['type'] == 'host'
+    return alias[a]['virsh'] == None
 
 def host_real_name(alias, host):
     return alias[host]['real']
@@ -125,7 +125,7 @@ def show_alias(alias):
 
     print
     print 'Supported virtual shortcut:'
-    al = [a for a in alias.keys() if not is_host(alia, a)]
+    al = [a for a in alias.keys() if not is_host(alias, a)]
     for i in range(0, len(al), 7):
         print al[i : i+7]
 
@@ -147,7 +147,7 @@ def main():
             # host doesn't support command 'view'
             if is_host(alias, a):
                 raise IndexError
-            view_real(host_real_name(alias, alias[a]['host']), alias[h]['port'], alias[a]['real'], extend_user('u'))
+            view_real(host_real_name(alias, alias[a]['host']), alias[h]['port'], alias[a]['virsh'], extend_user('u'))
         elif cmd == 'ssh':
             u = q.popleft()
             ssh_target(alias[a]['real'], alias[a]['port'], extend_user(u))
