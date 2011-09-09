@@ -19,7 +19,7 @@ alias_list = [('hm1'   , 'hm1'           , None            , 'hm1', '22'),
 
               ('hm2'   , 'hm2'           , None            , 'hm2', '22'),
               ('imap'  , 'hm2-1-vimap'   , 'hm2-1-vimap'   , 'hm2', '22'),
-                                          
+
               ('hg1'   , 'hg1'           , None            , 'hg1', '22'),
               ('puppet', 'hg1-1-vpuppet' , 'hg1-1-vpuppet' , 'hg1', '22'),
               ('10018b', 'hg1-2-v10018b' , 'hg1-2-v10018b' , 'hg1', '22'),
@@ -28,7 +28,7 @@ alias_list = [('hm1'   , 'hm1'           , None            , 'hm1', '22'),
               ('10105' , 'hg1-5-v10105'  , 'hg1-5-v10105'  , 'hg1', '22'),
               ('10106' , 'hg1-6-v10106'  , 'hg1-6-v10106'  , 'hg1', '22'),
               ('10107' , 'hg1-7-v10107'  , 'hg1-7-v10107'  , 'hg1', '22'),
-                                          
+
               ('hg2'   , 'hg2'           , None            , 'hg2', '22'),
               ('boss'  , 'hg2-1-v10101'  , 'hg2-1-v10101'  , 'hg2', '22'),
               ('demo'  , 'hg2-2-vdemo'   , 'hg2-2-vdemo'   , 'hg2', '22'),
@@ -63,7 +63,7 @@ class Alias:
         self.alias = self._auto_dict()
         for a in a_list:
             self.alias[a[0]]['real']  = a[1]
-            self.alias[a[0]]['virsh'] = a[2]            
+            self.alias[a[0]]['virsh'] = a[2]
             self.alias[a[0]]['host']  = a[3]
             self.alias[a[0]]['port']  = a[4]
 
