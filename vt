@@ -140,17 +140,20 @@ def main():
     try:
         cmd = q.popleft()
         a = q.popleft()
-        h = alias[a]['host']
         if cmd == 'ls':
+            h = alias[a]['host']
             ls_host(host_real_name(alias, alias[a]['host']), alias[h]['port'], extend_user('u'))
         elif cmd == 'go':
+            h = alias[a]['host']
             go_host(host_real_name(alias, alias[a]['host']), alias[h]['port'], extend_user('u'))
         elif cmd == 'view':
+            h = alias[a]['host']
             # host doesn't support command 'view'
             if is_host(alias, a):
                 raise IndexError
             view_real(host_real_name(alias, alias[a]['host']), alias[h]['port'], alias[a]['virsh'], extend_user('u'))
         elif cmd == 'ssh':
+            h = alias[a]['host']
             u = q.popleft()
             ssh_target(alias[a]['real'], alias[a]['port'], extend_user(u))
         else:
