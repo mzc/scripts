@@ -107,7 +107,7 @@ def host_real_name(alias, host):
 
 def usage(prog):
     print 'usage:', prog, '<command> <args ...>'
-    print '''The commands support are:
+    print '''The commands supported are:
     ls      List kvm virtual on a kvm host
     go      Run virsh on a kvm host
     view    Run virt-viewer access a kvm virtual
