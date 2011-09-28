@@ -114,13 +114,15 @@ def usage(prog):
     ls      List kvm virtual on a kvm host
     go      Run virsh on a kvm host
     view    Run virt-viewer access a kvm virtual
-    ssh     Ssh to ssh server'''
+    ssh     Ssh to ssh server
+    alias   Show alias info'''
     print
     print 'Examples:'
-    print '   ', prog, 'ls   <host|virtual>'
-    print '   ', prog, 'go   <host|virtual>'
-    print '   ', prog, 'view <virtual>'
-    print '   ', prog, 'ssh  <host|virtual> <user>'
+    print '   ', prog, 'ls    <host|virtual>'
+    print '   ', prog, 'go    <host|virtual>'
+    print '   ', prog, 'view  <virtual>'
+    print '   ', prog, 'ssh   <host|virtual> <user>'
+    print '   ', prog, 'alias <host|virtual>'
 
 def show_alias(alias):
     print 'Supported host shortcut:'
@@ -163,6 +165,12 @@ def main():
             while len(q):
                 cmd += [q.popleft()]
             ssh_target(alias[a]['real'], alias[a]['port'], extend_user(u), cmd)
+        elif cmd == 'alias':
+            aa = alias[a]
+            print 'real :', aa['real']
+            print 'port :', aa['port']
+            print 'host :', aa['host']
+            print 'virsh:', aa['virsh']
         else:
             raise IndexError
     except IndexError:
