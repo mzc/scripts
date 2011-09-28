@@ -17,8 +17,8 @@ alias_list = [('hm1'   , 'hm1'           , None            , 'hm1', '22'),
               ('ldap'  , 'hm1-8-vldap'   , 'hm1-8-vldap'   , 'hm1', '22'),
               ('debu1' , 'hm1-9-vdebu1'  , 'hm1-9-vdebu1'  , 'hm1', '22'),
 
-              ('hm2'   , 'hm2'           , None            , 'hm2', '22'),
-              ('imap'  , 'hm2-1-vimap'   , 'hm2-1-vimap'   , 'hm2', '22'),
+              ('hm2'    , 'hm2'          , None            , 'hm2', '22'),
+              ('debqa64', 'hm2-vdebqa64' , 'hm2-0-vdebqa64', 'hm2', '22'),
 
               ('hg1'   , 'hg1'           , None            , 'hg1', '22'),
               ('puppet', 'hg1-1-vpuppet' , 'hg1-1-vpuppet' , 'hg1', '22'),
