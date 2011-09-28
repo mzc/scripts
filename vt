@@ -99,6 +99,9 @@ def extend_user(u):
         print
         raise
 
+def default_user():
+    return extend_user('u')
+
 def is_host(alias, a):
     return alias[a]['virsh'] == None
 
@@ -142,16 +145,16 @@ def main():
         a = q.popleft()
         if cmd == 'ls':
             h = alias[a]['host']
-            ls_host(host_real_name(alias, alias[a]['host']), alias[h]['port'], extend_user('u'))
+            ls_host(host_real_name(alias, alias[a]['host']), alias[h]['port'], default_user())
         elif cmd == 'go':
             h = alias[a]['host']
-            go_host(host_real_name(alias, alias[a]['host']), alias[h]['port'], extend_user('u'))
+            go_host(host_real_name(alias, alias[a]['host']), alias[h]['port'], default_user())
         elif cmd == 'view':
             h = alias[a]['host']
             # host doesn't support command 'view'
             if is_host(alias, a):
                 raise IndexError
-            view_real(host_real_name(alias, alias[a]['host']), alias[h]['port'], alias[a]['virsh'], extend_user('u'))
+            view_real(host_real_name(alias, alias[a]['host']), alias[h]['port'], alias[a]['virsh'], default_user())
         elif cmd == 'ssh':
             h = alias[a]['host']
             u = q.popleft()
