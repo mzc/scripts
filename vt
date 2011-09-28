@@ -86,9 +86,9 @@ def go_host(host, port, user):
 def view_real(host, port, real, user):
     subprocess.call(['virt-viewer', '-c', 'qemu+ssh://' + user + '@' + host + ':' + port + '/system', real])
 
-def ssh_target(target, port, user):
-    subprocess.call(['ssh', '-X', '-p', port, user + '@' + target])
-
+def ssh_target(target, port, user, cmd):
+    subprocess.call(['ssh', '-X', '-p', port, user + '@' + target] + cmd)
+    
 def extend_user(u):
     users = { 'r' : 'root', 'u' : 'ubuntu', 'm' : 'mulisu' }
     try:
@@ -155,7 +155,11 @@ def main():
         elif cmd == 'ssh':
             h = alias[a]['host']
             u = q.popleft()
-            ssh_target(alias[a]['real'], alias[a]['port'], extend_user(u))
+
+            cmd = []
+            while len(q):
+                cmd += [q.popleft()]
+            ssh_target(alias[a]['real'], alias[a]['port'], extend_user(u), cmd)
         else:
             raise IndexError
     except IndexError:
