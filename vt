@@ -7,18 +7,21 @@ import collections
 
 #              alias     real              virsh             host   port
 alias_list = [('hm1'   , 'hm1'           , None            , 'hm1', '22'),
-              ('vmx'   , 'hm1-1-vmx'     , 'hm1-1-vmx'     , 'hm1', '22'),
+              ('mx'    , 'hm1-1-vmx'     , 'hm1-1-vmx'     , 'hm1', '22'),
               ('bzr'   , 'hm1-2-vbzr'    , 'hm1-2-vbzr'    , 'hm1', '22'),
-              ('vqa'   , 'hm1-3-vqa'     , 'hm1-3-vqa'     , 'hm1', '22'),
-              ('10000' , 'hm1-4-v10000'  , 'hm1-4-v10000'  , 'hm1', '22'),
-              ('vmp'   , 'hm1-5-vmp'     , 'hm1-5-vmp'     , 'hm1', '22'),
+              ('qa'    , 'hm1-3-vqa'     , 'hm1-3-vqa'     , 'hm1', '22'),
+              ('10000o', 'hm1-4-v10000'  , 'hm1-4-v10000'  , 'hm1', '22'),
+              ('mp'    , 'hm1-5-vmp'     , 'hm1-5-vmp'     , 'hm1', '22'),
               ('wwqa'  , 'hm1-6-vwwqa'   , 'hm1-6-vwwqa'   , 'hm1', '22'),
               ('debqa' , 'hm1-7-vdebqa'  , 'hm1-7-vdebqa'  , 'hm1', '22'),
               ('ldap'  , 'hm1-8-vldap'   , 'hm1-8-vldap'   , 'hm1', '22'),
               ('debu1' , 'hm1-9-vdebu1'  , 'hm1-9-vdebu1'  , 'hm1', '22'),
 
-              ('hm2'    , 'hm2'          , None            , 'hm2', '22'),
-              ('debqa64', 'hm2-vdebqa64' , 'hm2-0-vdebqa64', 'hm2', '22'),
+              ('hm2'    , 'hm2'           , None            , 'hm2', '22'),
+              ('debqa64', 'hm2-0-vdebqa64', 'hm2-0-vdebqa64', 'hm2', '22'),
+              ('qa64'   , 'hm2-1-vqa64'   , 'hm2-1-vqa64'   , 'hm2', '22'),
+              ('dev64'  , 'hm2-2-vdev64'  , 'hm2-2-vdev64'  , 'hm2', '22'),
+              ('10000'  , 'hm2-3-v10000'  , 'hm2-3-v10000'  , 'hm2', '22'),
 
               ('hg1'   , 'hg1'           , None            , 'hg1', '22'),
               ('puppet', 'hg1-1-vpuppet' , 'hg1-1-vpuppet' , 'hg1', '22'),
