@@ -21,10 +21,10 @@ alias_list = [('hm1'   , 'hm1'           , None            , 'hm1', '22'),
               ('debqa64', 'hm2-0-vdebqa64', 'hm2-0-vdebqa64', 'hm2', '22'),
               ('qa64'   , 'hm2-1-vqa64'   , 'hm2-1-vqa64'   , 'hm2', '22'),
               ('dev64'  , 'hm2-2-vdev64'  , 'hm2-2-vdev64'  , 'hm2', '22'),
-              ('10000'  , 'hm2-3-v10000'  , 'hm2-3-v10000'  , 'hm2', '22'),
               ('debu164', 'hm2-5-vdebu164', 'hm2-5-vdebu164', 'hm2', '22'),
 
-              ('hm3'   , 'hm3'            , None            , 'hm3', '22'),
+              ('hm3'    , 'hm3'           , None            , 'hm3', '22'),
+              ('10000'  , 'hm3-5-v10000'  , 'hm3-5-v10000'  , 'hm3', '22'),
 
               ('hg1'   , 'hg1'           , None            , 'hg1', '22'),
               ('puppet', 'hg1-1-vpuppet' , 'hg1-1-vpuppet' , 'hg1', '22'),
