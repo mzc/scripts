@@ -7,15 +7,6 @@ import collections
 
 #              alias     real              virsh             host   port
 alias_list = [('hm1'   , 'hm1'           , None            , 'hm1', '22'),
-              ('mx'    , 'hm1-1-vmx'     , 'hm1-1-vmx'     , 'hm1', '22'),
-              ('bzr'   , 'hm1-2-vbzr'    , 'hm1-2-vbzr'    , 'hm1', '22'),
-              ('qa'    , 'hm1-3-vqa'     , 'hm1-3-vqa'     , 'hm1', '22'),
-              ('10000o', 'hm1-4-v10000'  , 'hm1-4-v10000'  , 'hm1', '22'),
-              ('mp'    , 'hm1-5-vmp'     , 'hm1-5-vmp'     , 'hm1', '22'),
-              ('wwqa'  , 'hm1-6-vwwqa'   , 'hm1-6-vwwqa'   , 'hm1', '22'),
-              ('debqa' , 'hm1-7-vdebqa'  , 'hm1-7-vdebqa'  , 'hm1', '22'),
-              ('ldap'  , 'hm1-8-vldap'   , 'hm1-8-vldap'   , 'hm1', '22'),
-              ('debu1' , 'hm1-9-vdebu1'  , 'hm1-9-vdebu1'  , 'hm1', '22'),
 
               ('hm2'    , 'hm2'           , None            , 'hm2', '22'),
               ('debqa64', 'hm2-0-vdebqa64', 'hm2-0-vdebqa64', 'hm2', '22'),
@@ -24,7 +15,17 @@ alias_list = [('hm1'   , 'hm1'           , None            , 'hm1', '22'),
               ('debu164', 'hm2-5-vdebu164', 'hm2-5-vdebu164', 'hm2', '22'),
 
               ('hm3'    , 'hm3'           , None            , 'hm3', '22'),
+              ('mow'    , 'hm3-1-mow-32'  , 'hm3-1-mow-32'  , 'hm3', '22'),
+              ('omo'    , 'hm3-2-omo-32'  , 'hm3-2-omo-32'  , 'hm3', '22'),
+              ('uhmp'   , 'hm3-3-hump-32' , 'hm3-3-uhmp-32' , 'hm3', '22'),
+              ('mib'    , 'hm3-4-mib-32'  , 'hm3-4-mib-32'  , 'hm3', '22'),
               ('10000'  , 'hm3-5-v10000'  , 'hm3-5-v10000'  , 'hm3', '22'),
+              ('vbzr'   , 'hm3-6-vbzr'    , 'hm3-6-vbzr'    , 'hm3', '22'),
+              ('debqa'  , 'hm3-8-vdebqa'  , 'hm3-8-vdebqa'  , 'hm3', '22'),
+              ('mx'     , 'hm3-9-vmx'     , 'hm3-9-vmx'     , 'hm3', '22'),              
+              ('debu1'  , 'hm3-10-vdebu1' , 'hm3-10-vdebu1' , 'hm3', '22'),
+              ('mp'     , 'hm3-11-vmp'    , 'hm3-11-vmp'    , 'hm3', '22'),
+              ('wwqa'   , 'hm3-12-vwwqa'  , 'hm3-12-vwwqa'  , 'hm3', '22'),
 
               ('hg1'   , 'hg1'           , None            , 'hg1', '22'),
               ('puppet', 'hg1-1-vpuppet' , 'hg1-1-vpuppet' , 'hg1', '22'),
@@ -56,6 +57,9 @@ alias_list = [('hm1'   , 'hm1'           , None            , 'hm1', '22'),
               
               ('m5786' , 'm5786'          , None            , 'm5786','22'),
 			  ('ptest' , '192.168.200.201', 'ptest'         , 'm5786','22'),
+
+              ('10069h', 'muli10069'          , None                  , 'muli10069', '22'),
+              ('10069' , 'muli10069-1-v10069a', 'muli10069-1-v10069a' , 'muli10069', '22'),
               ]
 
 try:
