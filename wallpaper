@@ -1,0 +1,28 @@
+#!/usr/bin/env python2
+
+import sys
+import string
+from urlgrabber.grabber import URLGrabber
+
+wallpapers = [ "unnamed--19250e20ed",
+               "unnamed--c574b23be8",
+               "unnamed--13012e7228",
+               "unnamed--1d3e935035",
+               "unnamed--ec40afa9f3",
+               "unnamed--18c4e71e82",
+               "unnamed--6fad0a221b",
+               "unnamed--f1da805349",]
+
+url_template = "http://jootix.com/download.php?file=upload/DesktopWallpapers/cache/%s.jpg&imageName=%s"
+
+if len(sys.argv) < 2:
+    sys.exit('Usage: %s resolution' % sys.argv[0])
+    
+resolution = sys.argv[1]
+g = URLGrabber(reget = 'simple')
+for w in wallpapers:
+    wr = w + '-' + resolution
+    url = url_template % (wr, wr)
+    
+    local = g.urlgrab(url, filename = wr + '.jpg')
+    print local
