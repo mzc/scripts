@@ -4,14 +4,26 @@ import sys
 import string
 from urlgrabber.grabber import URLGrabber
 
-wallpapers = [ "unnamed--19250e20ed",
-               "unnamed--c574b23be8",
-               "unnamed--13012e7228",
-               "unnamed--1d3e935035",
-               "unnamed--ec40afa9f3",
-               "unnamed--18c4e71e82",
-               "unnamed--6fad0a221b",
-               "unnamed--f1da805349",]
+
+wallpapers = ["1920-1200-32776",
+              "unnamed--054802011f",
+              "unnamed--13012e7228",
+              "unnamed--18c4e71e82",
+              "unnamed--19250e20ed",
+              "unnamed--1d3e935035",
+              "unnamed--4d1e84bf9c",
+              "unnamed--514eaff801",
+              "unnamed--62108c2aaa",
+              "unnamed--6fad0a221b",
+              "unnamed--71e81de7fc",
+              "unnamed--a3c9db8391",
+              "unnamed--abc8251d04",
+              "unnamed--c574b23be8",
+              "unnamed--ec40afa9f3",
+              "unnamed--f1da805349",
+              "unnamed--fa8e4f53ab",
+              "Most-Famous-Characters-characters-",
+              "Unstoppable-Player-unstoppable-player-football",]
 
 url_template = "http://jootix.com/download.php?file=upload/DesktopWallpapers/cache/%s.jpg&imageName=%s"
 
