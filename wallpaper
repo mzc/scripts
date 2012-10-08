@@ -4,12 +4,11 @@ import sys
 import string
 from urlgrabber.grabber import URLGrabber
 
-
 wallpapers = ["1920-1200-32776",
               "unnamed--054802011f",
               "unnamed--13012e7228",
               "unnamed--18c4e71e82",
-              "unnamed--19250e20ed",
+              "unnamed--1a8c3506c2",
               "unnamed--1d3e935035",
               "unnamed--4d1e84bf9c",
               "unnamed--514eaff801",
@@ -38,3 +37,5 @@ for w in wallpapers:
     
     local = g.urlgrab(url, filename = wr + '.jpg')
     print local
+
+#-*- python-mode -*-
