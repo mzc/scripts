@@ -1,6 +1,7 @@
 #!/usr/bin/env python2
 
 import sys
+import os
 import string
 from urlgrabber.grabber import URLGrabber
 
@@ -34,8 +35,9 @@ g = URLGrabber(reget = 'simple')
 for w in wallpapers:
     wr = w + '-' + resolution
     url = url_template % (wr, wr)
-    
-    local = g.urlgrab(url, filename = wr + '.jpg')
-    print local
+
+    if not os.path.exists(wr + '.jpg'):
+        local = g.urlgrab(url, filename = wr + '.jpg')
+        print local
 
 #-*- python-mode -*-
