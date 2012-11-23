@@ -29,5 +29,4 @@ ${linux}/scripts/config --file ${linux}/.config --disable CONFIG_DEBUG_RODATA
 
 yes "" | make -C $linux oldconfig
 
-nr_cpu=$(cat /proc/cpuinfo | grep processor | wc -l)
-make -C $linux -j${nr_cpu}
+make -C $linux -j$(nproc)
