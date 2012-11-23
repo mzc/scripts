@@ -1,0 +1,49 @@
+#!/bin/bash
+
+[ "$#" = "1" ] || { echo "Usage: $(basename "$0") filename_of_image"; exit 1; }
+
+rootfs_img=${1}
+repo=${HOME}/repo
+busybox=${repo}/busybox
+cwd=$(pwd)
+
+tmpdir=$(mktemp -d)
+cd $tmpdir
+
+mkdir -p dev etc/init.d mnt proc root sys tmp
+chmod a+rwxt tmp
+
+cp -rf ${busybox}/_install/* ./
+
+mkdir -p usr/share/udhcpc
+cp -rf ${busybox}/examples/udhcp/simple.script ./usr/share/udhcpc/default.script
+
+cat << EOF > etc/fstab
+proc  /proc  proc  defaults  0  0
+sysfs  /sys  sysfs defaults  0  0
+tmpfs  /tmp  tmpfs defaults  0  0
+EOF
+
+cat << EOF > etc/inittab
+::sysinit:/etc/init.d/rcS
+::respawn:-/bin/sh
+tty2::askfirst:-/bin/sh
+::ctrlaltdel:/bin/umount -a -r
+EOF
+
+cat << EOF > etc/init.d/rcS
+#!bin/sh
+/bin/mount -a
+/sbin/mdev -s
+/sbin/ifconfig eth0 up >/dev/null 2>&1 \
+&& /sbin/udhcpc eth0 >/dev/null 2>&1
+EOF
+
+chmod 755 etc/init.d/rcS
+
+find ./ | cpio -o -H newc | gzip > ${cwd}/${rootfs_img}
+
+cd $cwd
+rm -rf $tmpdir
+
+exit 0
