@@ -1,37 +1,56 @@
 #!/bin/bash
 
-[ "$#" = "1" ] || { echo "Usage: $(basename "$0") filename_of_image"; exit 1; }
+function init {
+    repo=${HOME}/repo
+    busybox=${repo}/busybox
+}
 
-rootfs_img=${1}
-repo=${HOME}/repo
-busybox=${repo}/busybox
-cwd=$(pwd)
+function get_busybox {
+    git clone git://git.busybox.net/busybox $busybox
+}
 
-tmpdir=$(mktemp -d)
-cd $tmpdir
+function config_busybox {
+    make -C $busybox defconfig
 
-mkdir -p dev etc/init.d mnt proc root sys tmp
-chmod a+rwxt tmp
+    ${LINUX}/scripts/config --file ${busybox}/.config --enable CONFIG_STATIC
+    ${LINUX}/scripts/config --file ${busybox}/.config --enable CONFIG_INSTALL_NO_USR
+    ${LINUX}/scripts/config --file ${busybox}/.config --disable CONFIG_INETD
+    ${LINUX}/scripts/config --file ${busybox}/.config --disable CONFIG_FEATURE_MOUNT_NFS
 
-cp -rf ${busybox}/_install/* ./
+    yes "" | make -C $busybox oldconfig
+}
 
-mkdir -p usr/share/udhcpc
-cp -rf ${busybox}/examples/udhcp/simple.script ./usr/share/udhcpc/default.script
+function compile_busybox {
+    make -C $busybox install -j$(nproc)
+}
 
-cat << EOF > etc/fstab
+function create_root_fs {
+    cwd=$(pwd)
+    tmpdir=$(mktemp -d)
+    cd $tmpdir
+
+    mkdir -p dev etc/init.d mnt proc root sys tmp
+    chmod a+rwxt tmp
+
+    cp -rf ${busybox}/_install/* ./
+
+    mkdir -p usr/share/udhcpc
+    cp -rf ${busybox}/examples/udhcp/simple.script ./usr/share/udhcpc/default.script
+
+    cat << EOF > etc/fstab
 proc  /proc  proc  defaults  0  0
 sysfs  /sys  sysfs defaults  0  0
 tmpfs  /tmp  tmpfs defaults  0  0
 EOF
 
-cat << EOF > etc/inittab
+    cat << EOF > etc/inittab
 ::sysinit:/etc/init.d/rcS
 ::respawn:-/bin/sh
 tty2::askfirst:-/bin/sh
 ::ctrlaltdel:/bin/umount -a -r
 EOF
 
-cat << EOF > etc/init.d/rcS
+    cat << EOF > etc/init.d/rcS
 #!bin/sh
 /bin/mount -a
 /sbin/mdev -s
@@ -39,11 +58,26 @@ cat << EOF > etc/init.d/rcS
 && /sbin/udhcpc eth0 >/dev/null 2>&1
 EOF
 
-chmod 755 etc/init.d/rcS
+    chmod 755 etc/init.d/rcS
 
-find ./ | cpio -o -H newc | gzip > ${cwd}/${rootfs_img}
+    find ./ | cpio -o -H newc | gzip > ${cwd}/${rootfs_img}
 
-cd $cwd
-rm -rf $tmpdir
+    cd $cwd
+    rm -rf $tmpdir
+}
 
-exit 0
+function main {
+    init
+    if [ ! -d $busybox ]; then
+	get_busybox
+	config_busybox
+	compile_busybox
+    fi
+    create_root_fs
+    exit 0
+}
+
+[ "$#" = "1" ] || { echo "Usage: $(basename "$0") filename_of_image"; exit 1; }
+rootfs_img=${1}
+
+main
