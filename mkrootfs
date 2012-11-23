@@ -3,6 +3,7 @@
 function init {
     repo=${HOME}/repo
     busybox=${repo}/busybox
+    linux=${repo}/linux
 }
 
 function get_busybox {
@@ -12,10 +13,10 @@ function get_busybox {
 function config_busybox {
     make -C $busybox defconfig
 
-    ${LINUX}/scripts/config --file ${busybox}/.config --enable CONFIG_STATIC
-    ${LINUX}/scripts/config --file ${busybox}/.config --enable CONFIG_INSTALL_NO_USR
-    ${LINUX}/scripts/config --file ${busybox}/.config --disable CONFIG_INETD
-    ${LINUX}/scripts/config --file ${busybox}/.config --disable CONFIG_FEATURE_MOUNT_NFS
+    ${linux}/scripts/config --file ${busybox}/.config --enable CONFIG_STATIC
+    ${linux}/scripts/config --file ${busybox}/.config --enable CONFIG_INSTALL_NO_USR
+    ${linux}/scripts/config --file ${busybox}/.config --disable CONFIG_INETD
+    ${linux}/scripts/config --file ${busybox}/.config --disable CONFIG_FEATURE_MOUNT_NFS
 
     yes "" | make -C $busybox oldconfig
 }
@@ -54,8 +55,7 @@ EOF
 #!/bin/sh
 /bin/mount -a
 /sbin/mdev -s
-/sbin/ifconfig eth0 up >/dev/null 2>&1 \
-&& /sbin/udhcpc eth0 >/dev/null 2>&1
+/sbin/ifconfig eth0 up >/dev/null 2>&1 && /sbin/udhcpc eth0 >/dev/null 2>&1
 EOF
 
     chmod 755 etc/init.d/rcS
