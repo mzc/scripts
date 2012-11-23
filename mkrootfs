@@ -51,7 +51,7 @@ tty2::askfirst:-/bin/sh
 EOF
 
     cat << EOF > etc/init.d/rcS
-#!bin/sh
+#!/bin/sh
 /bin/mount -a
 /sbin/mdev -s
 /sbin/ifconfig eth0 up >/dev/null 2>&1 \
