@@ -77,7 +77,7 @@ function main {
     exit 0
 }
 
-[ "$#" = "1" ] || { echo "Usage: $(basename "$0") filename_of_image"; exit 1; }
-rootfs_img=${1}
+[ $# = "1" ] || { echo "Usage: $(basename "$0") filename_of_image"; exit 1; }
+rootfs_img="$1"
 
 main
