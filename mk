@@ -26,6 +26,10 @@ function compile_linux {
     make -C $linux -j$(nproc)
 }
 
+function build_cscope {
+    make -C $linux cscope
+}
+
 function main {
     init
     if [ ! -d $linux ]; then
@@ -33,6 +37,7 @@ function main {
     fi
     config_linux
     compile_linux
+    build_cscope
     exit 0
 }
 
