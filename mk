@@ -34,11 +34,36 @@ function main {
     init
     if [ ! -d $linux ]; then
 	get_linux
+	config_linux
+	compile_linux
+	build_cscope
+    elif [ $all = "yes" ]; then
+	config_linux
+	compile_linux
+	build_cscope
+    else
+	compile_linux	
     fi
-    config_linux
-    compile_linux
-    build_cscope
     exit 0
 }
+
+ARGS=$(getopt -o "a" -l "all" -n "getopt.sh" -- "$@")
+if [ $? -ne 0 ]; then
+    exit 1
+fi
+
+eval set -- "$ARGS"
+
+all=no
+while true; do
+    case "$1" in
+	-a|--all)
+	    all=yes
+	    shift;;
+	--)
+	    shift
+	    break;;
+    esac
+done
 
 main
