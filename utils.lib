@@ -1,0 +1,12 @@
+#!/bin/bash
+
+function init {
+    repo=${HOME}/repo
+    linux=${repo}/linux
+    vmlinux=${linux}/vmlinux
+}
+
+function die {
+    echo $1
+    exit 1
+}
