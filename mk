@@ -23,6 +23,8 @@ function config_linux_stp {
     make -C $linux mrproper
     make -C $linux localmodconfig
 
+    ${linux}/scripts/config --file ${linux}/.config --set-str CONFIG_LOCALVERSION "-mzc"
+
     ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_KPROBES
     ${linux}/scripts/config --file ${linux}/.config --disable CONFIG_KPROBES_SANITY_TEST
     ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_KPROBE_EVENT
