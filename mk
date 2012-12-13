@@ -1,9 +1,6 @@
 #!/bin/bash
 
-function init {
-    repo=${HOME}/repo
-    linux=${repo}/linux
-}
+source utils.lib
 
 function get_linux {
     git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git $linux
