@@ -2,8 +2,11 @@
 
 function init {
     repo=${HOME}/repo
+
     linux=${repo}/linux
     vmlinux=${linux}/vmlinux
+
+    busybox=${repo}/busybox
 }
 
 function die {
