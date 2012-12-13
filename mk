@@ -6,7 +6,7 @@ function get_linux {
     git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git $linux
 }
 
-function config_linux {
+function config_linux_kvm {
     make -C $linux mrproper
     make -C $linux defconfig
 
@@ -15,6 +15,31 @@ function config_linux {
     ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_KGDB
     ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_KGDB_SERIAL_CONSOLE
     ${linux}/scripts/config --file ${linux}/.config --disable CONFIG_DEBUG_RODATA
+
+    yes "" | make -C $linux oldconfig
+}
+
+function config_linux_stp {
+    make -C $linux mrproper
+    make -C $linux localmodconfig
+
+    ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_KPROBES
+    ${linux}/scripts/config --file ${linux}/.config --disable CONFIG_KPROBES_SANITY_TEST
+    ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_KPROBE_EVENT
+
+    ${linux}/scripts/config --file ${linux}/.config --module CONFIG_NET_DCCPPROBE
+    ${linux}/scripts/config --file ${linux}/.config --module CONFIG_NET_SCTPPROBE
+    ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_NET_TCPPROBE
+
+    ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_DEBUG_FS
+    ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_DEBUG_INFO
+    ${linux}/scripts/config --file ${linux}/.config --disable CONFIG_DEBUG_INFO_REDUCED
+
+    ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_UTRACE
+    ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_RELAY
+    ${linux}/scripts/config --file ${linux}/.config --disable CONFIG_X86_DECODER_SELFTEST
+    ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_MODULES
+    ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_MODULE_UNLOAD
 
     yes "" | make -C $linux oldconfig
 }
@@ -31,31 +56,39 @@ function main {
     init
     if [ ! -d $linux ]; then
 	get_linux
-	config_linux
-	compile_linux
-	build_cscope
-    elif [ $all = "yes" ]; then
-	config_linux
-	compile_linux
-	build_cscope
-    else
-	compile_linux	
     fi
+
+    if [ $kvm = "yes" ]; then
+	config_linux_kvm
+    elif [ $stp = "yes" ]; then
+	config_linux_stp
+    fi
+
+    compile_linux
+    
+    if [ $kvm = "yes" -o $stp = "yes" ]; then
+	build_cscope
+    fi
+
     exit 0
 }
 
-ARGS=$(getopt -o "a" -l "all" -n "getopt.sh" -- "$@")
+args=$(getopt -o "ks" -l "kvm,stp" -n "getopt.sh" -- "$@")
 if [ $? -ne 0 ]; then
     exit 1
 fi
 
-eval set -- "$ARGS"
+eval set -- "$args"
 
-all=no
+kvm=no
+stp=no
 while true; do
     case "$1" in
-	-a|--all)
-	    all=yes
+	-k|--kvm)
+	    kvm=yes
+	    shift;;
+	-s|--stp)
+	    stp=yes
 	    shift;;
 	--)
 	    shift
