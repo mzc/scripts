@@ -2,11 +2,12 @@
 
 function init {
     repo=${HOME}/repo
-
-    linux=${repo}/linux
-    vmlinux=${linux}/vmlinux
-
     busybox=${repo}/busybox
+
+    if [ -z $linux ]; then
+	linux=${repo}/linux
+    fi
+    vmlinux=${linux}/vmlinux
 }
 
 function die {

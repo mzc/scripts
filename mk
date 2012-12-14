@@ -2,8 +2,17 @@
 
 source utils.lib
 
-function get_linux {
-    git clone git://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git $linux
+function check_linux_source {
+    readme=${linux}/README
+
+    if [ ! -d $linux -o ! -e $readme ]; then
+	die "$linux: Cannot find linux souce."
+    fi
+
+    res=$(head -n 1 $readme | grep "Linux kernel")
+    if [ -z "$res" ]; then
+	die "$linux: Cannot find linux souce."
+    fi
 }
 
 function config_linux_kvm {
@@ -46,9 +55,8 @@ function build_cscope {
 
 function main {
     init
-    if [ ! -d $linux ]; then
-	get_linux
-    fi
+
+    check_linux_source
 
     if [ $kvm = "yes" ]; then
 	config_linux_kvm
@@ -74,6 +82,7 @@ eval set -- "$args"
 
 kvm=no
 stp=no
+linux=$(pwd)
 while true; do
     case "$1" in
 	-k|--kvm)
