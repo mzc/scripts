@@ -25,23 +25,13 @@ function config_linux_stp {
 
     ${linux}/scripts/config --file ${linux}/.config --set-str CONFIG_LOCALVERSION "-mzc"
 
-    ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_KPROBES
-    ${linux}/scripts/config --file ${linux}/.config --disable CONFIG_KPROBES_SANITY_TEST
-    ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_KPROBE_EVENT
-
-    ${linux}/scripts/config --file ${linux}/.config --module CONFIG_NET_DCCPPROBE
-    ${linux}/scripts/config --file ${linux}/.config --module CONFIG_NET_SCTPPROBE
-    ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_NET_TCPPROBE
-
-    ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_DEBUG_FS
     ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_DEBUG_INFO
-    ${linux}/scripts/config --file ${linux}/.config --disable CONFIG_DEBUG_INFO_REDUCED
-
-    ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_UTRACE
+    ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_KPROBES
     ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_RELAY
-    ${linux}/scripts/config --file ${linux}/.config --disable CONFIG_X86_DECODER_SELFTEST
+    ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_DEBUG_FS
     ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_MODULES
     ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_MODULE_UNLOAD
+    ${linux}/scripts/config --file ${linux}/.config --enable CONFIG_UTRACE
 
     yes "" | make -C $linux oldconfig
 }
