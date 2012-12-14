@@ -97,7 +97,8 @@ function install_kernel_on_arch {
 }
 
 function get_distributor {
-    echo "ubuntu"
+    local dist=$(lsb_release --id | awk '{ print $3 }')
+    echo $dist
 }
 
 function main {
