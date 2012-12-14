@@ -89,11 +89,11 @@ function install_kernel_on_ubuntu {
 function install_kernel_on_arch {
     sudo make -C $linux modules_install
 
-    local vmlinuz_target=/boot/vmlinuz-mzc
-    local initrd_target=/boot/initramfs-mzc.img
+    local vmlinuz_target=/boot/vmlinuz-$kernel_version
+    local initrd_target=/boot/initramfs-$kernel_version.img
 
     sudo cp -v $vmlinuz $vmlinuz_target
-    sudo mkinitcpio -k $kernel_versoin -g $initrd_target
+    sudo mkinitcpio -k $kernel_version -g $initrd_target
 }
 
 function get_distributor {
