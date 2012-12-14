@@ -1,13 +1,16 @@
 #!/bin/bash
 
 function init {
-    repo=${HOME}/repo
-    busybox=${repo}/busybox
+    repo=$HOME/repo
+    busybox=$repo/busybox
 
-    if [ -z $linux ]; then
-	linux=${repo}/linux
+    if [ -z "$linux" ]; then
+	linux=$repo/linux
     fi
-    vmlinux=${linux}/vmlinux
+    vmlinux=$linux/vmlinux
+    vmlinuz=$linux/arch/x86/boot/bzImage
+    system_map=$linux/System.map
+    config=$linux/.config
 }
 
 function die {
