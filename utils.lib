@@ -4,9 +4,8 @@ function init {
     repo=$HOME/repo
     busybox=$repo/busybox
 
-    if [ -z "$linux" ]; then
-	linux=$repo/linux
-    fi
+    [ "$linux" ] || linux=$repo/linux
+
     vmlinux=$linux/vmlinux
     vmlinuz=$linux/arch/x86/boot/bzImage
     system_map=$linux/System.map
