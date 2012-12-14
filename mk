@@ -94,6 +94,8 @@ function install_kernel_on_arch {
 
     sudo cp -v $vmlinuz $vmlinuz_target
     sudo mkinitcpio -k $kernel_version -g $initrd_target
+
+    sudo grub-mkconfig -o /boot/grub/grub.cfg
 }
 
 function get_distributor {
