@@ -1,18 +1,19 @@
 #!/bin/bash
 
 function init {
-    repo=$HOME/repo
-    busybox=$repo/busybox
+    repo="${HOME}/repo"
+    busybox="${repo}/busybox"
 
-    [ "$linux" ] || linux=$repo/linux
+    [ "${linux}" ] || linux="${repo}/linux"
 
-    vmlinux=$linux/vmlinux
-    vmlinuz=$linux/arch/x86/boot/bzImage
-    system_map=$linux/System.map
-    config=$linux/.config
+    vmlinux="${linux}/vmlinux"
+    vmlinuz="${linux}/arch/x86/boot/bzImage"
+    system_map="${linux}/System.map"
+    config="${linux}/.config"
+    config_cmd="${linux}/scripts/config"
 }
 
 function die {
-    echo $1
+    echo "$1"
     exit 1
 }

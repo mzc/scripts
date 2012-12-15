@@ -3,104 +3,88 @@
 source utils.lib
 
 function is_source_exist {
-    local readme=$linux/README
+    local readme="${linux}/README"
+    [ -d "${linux}" -a -e "${readme}" ] || die "${linux}: Cannot find linux souce."
 
-    if [ ! -d $linux -o ! -e $readme ]; then
-	die "$linux: Cannot find linux souce."
-    fi
-
-    local res=$(head -n 1 "$readme" | grep "Linux kernel")
-    if [ -z "$res" ]; then
-	die "$linux: Cannot find linux souce."
-    fi
+    local res=$(head -n 1 "${readme}" | grep "Linux kernel")
+    [ "${res}" ] || die "${linux}: Cannot find linux souce."
 }
 
 function config_for_kvm {
-    make -C $linux mrproper
-    make -C $linux defconfig
+    make -C "${linux}" mrproper
+    make -C "${linux}" defconfig
 
-    $linux/scripts/config --file $linux/.config --enable CONFIG_EXPERIMENTAL
-    $linux/scripts/config --file $linux/.config --enable CONFIG_DEBUG_INFO
-    $linux/scripts/config --file $linux/.config --enable CONFIG_KGDB
-    $linux/scripts/config --file $linux/.config --enable CONFIG_KGDB_SERIAL_CONSOLE
-    $linux/scripts/config --file $linux/.config --disable CONFIG_DEBUG_RODATA
+    ${config_cmd} --file "${config}" --enable CONFIG_EXPERIMENTAL
+    ${config_cmd} --file "${config}" --enable CONFIG_DEBUG_INFO
+    ${config_cmd} --file "${config}" --enable CONFIG_KGDB
+    ${config_cmd} --file "${config}" --enable CONFIG_KGDB_SERIAL_CONSOLE
+    ${config_cmd} --file "${config}" --disable CONFIG_DEBUG_RODATA
 
-    yes "" | make -C $linux oldconfig
+    yes "" | make -C "${linux}" oldconfig
 }
 
 function config_for_stp {
-    make -C $linux mrproper
-    make -C $linux localmodconfig
+    make -C "${linux}" mrproper
+    make -C "${linux}" localmodconfig
 
-    $linux/scripts/config --file $linux/.config --set-str CONFIG_LOCALVERSION "-mzc"
-    $linux/scripts/config --file $linux/.config --enable CONFIG_DEBUG_INFO
-    $linux/scripts/config --file $linux/.config --enable CONFIG_KPROBES
-    $linux/scripts/config --file $linux/.config --enable CONFIG_RELAY
-    $linux/scripts/config --file $linux/.config --enable CONFIG_DEBUG_FS
-    $linux/scripts/config --file $linux/.config --enable CONFIG_MODULES
-    $linux/scripts/config --file $linux/.config --enable CONFIG_MODULE_UNLOAD
-    $linux/scripts/config --file $linux/.config --enable CONFIG_UTRACE
+    ${config_cmd} --file "${config}" --set-str CONFIG_LOCALVERSION "-mzc"
+    ${config_cmd} --file "${config}" --enable CONFIG_DEBUG_INFO
+    ${config_cmd} --file "${config}" --enable CONFIG_KPROBES
+    ${config_cmd} --file "${config}" --enable CONFIG_RELAY
+    ${config_cmd} --file "${config}" --enable CONFIG_DEBUG_FS
+    ${config_cmd} --file "${config}" --enable CONFIG_MODULES
+    ${config_cmd} --file "${config}" --enable CONFIG_MODULE_UNLOAD
+    ${config_cmd} --file "${config}" --enable CONFIG_UTRACE
 
-    yes "" | make -C $linux oldconfig
+    yes "" | make -C "${linux}" oldconfig
 }
 
 function compile_kernel {
-    make -C $linux -j$(nproc)
+    make -C "${linux}" -j$(nproc)
 }
 
 function build_cscope {
-    make -C $linux cscope
+    make -C "${linux}" cscope
 }
 
 function is_kernel_compiled {
-    if [ ! -e $vmlinuz ]; then
-	die "Kernel has not been compiled."
-    fi
+    [ -e "${vmlinuz}" ] || die "Kernel has not been compiled."
 }
 
 function get_kernel_version {
-    local kernel_release=$linux/include/config/kernel.release
-    kernel_version=$(cat $kernel_release)
+    kernel_version=$(cat "${linux}/include/config/kernel.release")
 }
 
 function is_kernel_installed {
-    local lib_modules=/lib/modules/$kernel_version
-    if [ -d $lib_modules ]; then
-	die "Kernel: $kernel_version has already installed."
-    fi
+    [ ! -d "/lib/modules/${kernel_version}" ] || die "Kernel: ${kernel_version} has already installed."
 }
 
 function install_kernel_on_ubuntu {
-    sudo make -C $linux modules_install
+    sudo make -C "${linux}" modules_install
 
-    local vmlinuz_target=/boot/vmlinuz-$kernel_version
-    local system_map_target=/boot/System.map-$kernel_version
-    local config_target=/boot/config-$kernel_version
-    local initrd_target=/boot/initd.img-$kernel_version
+    sudo cp -v "${vmlinuz}" "/boot/vmlinuz-${kernel_version}"
+    sudo cp -v "${system_map}" "/boot/System.map-${kernel_version}"
+    sudo cp -v "${config}" "/boot/config-${kernel_version}"
 
-    sudo cp -v $vmlinuz $vmlinuz_target
-    sudo cp -v $system_map $system_map_target
-    sudo cp -v $config $config_target
-    sudo mkinitramfs -k -o $initrd_target $kernel_version
+    local initrd="/boot/initd.img-${kernel_version}"
+    sudo mkinitramfs -k -o "${initrd}" "${kernel_version}"
 
     sudo update-grub2
 }
 
 function install_kernel_on_arch {
-    sudo make -C $linux modules_install
+    sudo make -C "${linux}" modules_install
 
-    local vmlinuz_target=/boot/vmlinuz-$kernel_version
-    local initrd_target=/boot/initramfs-$kernel_version.img
+    sudo cp -v "${vmlinuz}" "/boot/vmlinuz-${kernel_version}"
 
-    sudo cp -v $vmlinuz $vmlinuz_target
-    sudo mkinitcpio -k $kernel_version -g $initrd_target
+    local initramfs="/boot/initramfs-${kernel_version}.img"
+    sudo mkinitcpio -k "${kernel_version}" -g "${initramfs}"
 
     sudo grub-mkconfig -o /boot/grub/grub.cfg
 }
 
 function get_distributor {
-    local dist=$(lsb_release --id | awk '{ print $3 }')
-    echo $dist
+    echo $(lsb_release --id | awk '{ print $3 }')
 }
 
 function main {
@@ -136,9 +120,7 @@ function main {
 }
 
 args=$(getopt -o "ksi" -l "kvm,stp,install" -n "getopt.sh" -- "$@")
-if [ $? -ne 0 ]; then
-    exit 1
-fi
+[ $? -eq 0 ] || exit 1
 
 eval set -- "$args"
 

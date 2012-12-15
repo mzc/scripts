@@ -3,36 +3,38 @@
 source utils.lib
 
 function get_busybox {
-    git clone git://git.busybox.net/busybox $busybox
+    git clone git://git.busybox.net/busybox "${busybox}"
 }
 
 function config_busybox {
-    make -C $busybox defconfig
+    make -C "${busybox}" defconfig
 
-    $linux/scripts/config --file $busybox/.config --enable CONFIG_STATIC
-    $linux/scripts/config --file $busybox/.config --enable CONFIG_INSTALL_NO_USR
-    $linux/scripts/config --file $busybox/.config --disable CONFIG_INETD
-    $linux/scripts/config --file $busybox/.config --disable CONFIG_FEATURE_MOUNT_NFS
+    local busybox_config="${busybox}/.config"
 
-    yes "" | make -C $busybox oldconfig
+    ${config_cmd} --file "${busybox_config}" --enable CONFIG_STATIC
+    ${config_cmd} --file "${busybox_config}" --enable CONFIG_INSTALL_NO_USR
+    ${config_cmd} --file "${busybox_config}" --disable CONFIG_INETD
+    ${config_cmd} --file "${busybox_config}" --disable CONFIG_FEATURE_MOUNT_NFS
+
+    yes "" | make -C "${busybox}" oldconfig
 }
 
 function compile_busybox {
-    make -C $busybox install -j$(nproc)
+    make -C "${busybox}" install -j$(nproc)
 }
 
 function create_root_fs {
-    cwd=$(pwd)
-    tmpdir=$(mktemp -d)
-    cd $tmpdir
+    local cwd=$(pwd)
+    local tmpdir=$(mktemp -d)
+    cd "${tmpdir}"
 
     mkdir -p dev etc/init.d mnt proc root sys tmp
     chmod a+rwxt tmp
 
-    cp -rf $busybox/_install/* ./
+    cp -rf "${busybox}"/_install/* ./
 
     mkdir -p usr/share/udhcpc
-    cp -rf $busybox/examples/udhcp/simple.script ./usr/share/udhcpc/default.script
+    cp -rf "${busybox}/examples/udhcp/simple.script" ./usr/share/udhcpc/default.script
 
     cat << EOF > etc/fstab
 proc  /proc  proc  defaults  0  0
@@ -56,15 +58,15 @@ EOF
 
     chmod 755 etc/init.d/rcS
 
-    find ./ | cpio -o -H newc | gzip > $cwd/$rootfs_img
+    find ./ | cpio -o -H newc | gzip > "${cwd}/${rootfs_img}"
 
-    cd $cwd
-    rm -rf $tmpdir
+    cd "${cwd}"
+    rm -rf "${tmpdir}"
 }
 
 function main {
     init
-    if [ ! -d $busybox ]; then
+    if [ ! -d "${busybox}" ]; then
 	get_busybox
 	config_busybox
 	compile_busybox

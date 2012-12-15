@@ -5,18 +5,14 @@ source utils.lib
 function main {
     init
 
-    if [ ! -e $vmlinux ]; then
-	die "Cannot find $vmlinux"
-    fi
+    [ -e "${vmlinux}" ] || die "Cannot find $vmlinux"
 
-    addr=$(nm $vmlinux | grep " ${sym}$" | awk '{print $1}')
-    if [ -z $addr ]; then
-	die "Cannot find sym:$sym in $vmlinux"
-    fi
+    addr=$(nm "${vmlinux}" | grep " ${sym}$" | awk '{print $1}')
+    [ $addr ] || "Cannot find sym:${sym} in ${vmlinux}"
 
-    echo $(addr2line -e $vmlinux $addr)
+    echo $(addr2line -e "${vmlinux}" "${addr}")
     exit 0
 }
 
-sym=$1
+sym="$1"
 main
