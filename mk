@@ -109,7 +109,7 @@ function main {
 	is_kernel_installed
 	
 	local dist=$(get_distributor)
-	if [ "$dist" = "ubuntu" ]; then
+	if [ "$dist" = "Ubuntu" ]; then
 	    install_kernel_on_ubuntu
 	elif [ "$dist" = "arch" ]; then
 	    install_kernel_on_arch
