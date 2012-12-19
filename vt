@@ -6,8 +6,9 @@ import subprocess
 import collections
 
 #              alias     real              virsh             host   port
-alias_list = [('hm1'   , 'hm1'           , None            , 'hm1', '22'),
-
+alias_list = [('hm1'    , 'hm1'           , None            , 'hm1', '22'),
+              ('debqap' , 'hm1-0-vdebqap' , 'hm1-0-vdebqap' , 'hm1', '22'),
+              
               ('hm2'    , 'hm2'           , None            , 'hm2', '22'),
               ('debqa64', 'hm2-0-vdebqa64', 'hm2-0-vdebqa64', 'hm2', '22'),
               ('qa64'   , 'hm2-1-vqa64'   , 'hm2-1-vqa64'   , 'hm2', '22'),
@@ -15,6 +16,7 @@ alias_list = [('hm1'   , 'hm1'           , None            , 'hm1', '22'),
               ('debu164', 'hm2-5-vdebu164', 'hm2-5-vdebu164', 'hm2', '22'),
 
               ('hm3'    , 'hm3'           , None            , 'hm3', '22'),
+              ('mail'   , 'hm3-0-mail-32' , 'hm3-0-mail-32' , 'hm3', '22'),
               ('mow'    , 'hm3-1-mow-32'  , 'hm3-1-mow-32'  , 'hm3', '22'),
               ('omo'    , 'hm3-2-omo-32'  , 'hm3-2-omo-32'  , 'hm3', '22'),
               ('uhmp'   , 'hm3-3-hump-32' , 'hm3-3-uhmp-32' , 'hm3', '22'),
@@ -25,41 +27,14 @@ alias_list = [('hm1'   , 'hm1'           , None            , 'hm1', '22'),
               ('mx'     , 'hm3-9-vmx'     , 'hm3-9-vmx'     , 'hm3', '22'),              
               ('debu1'  , 'hm3-10-vdebu1' , 'hm3-10-vdebu1' , 'hm3', '22'),
               ('mp'     , 'hm3-11-vmp'    , 'hm3-11-vmp'    , 'hm3', '22'),
+              
               ('wwqa'   , 'hm3-12-vwwqa'  , 'hm3-12-vwwqa'  , 'hm3', '22'),
+              ('qap'    , 'hm3-13-vqap'   , 'hm3-13-vqap'   , 'hm3', '22'),
+              ('testp'  , 'hm3-14-vtestp' , 'hm3-14-vtestp' , 'hm3', '22'),
+              ('puppet' , 'hm3-15-vpuppet', 'hm3-14-vpuppet', 'hm3', '22'),
+              ('nagios' , 'hm3-17-vnagios', 'hm3-17-vnagios', 'hm3', '22'),
 
-              ('hg1'   , 'hg1'           , None            , 'hg1', '22'),
-              ('puppet', 'hg1-1-vpuppet' , 'hg1-1-vpuppet' , 'hg1', '22'),
-              ('10018b', 'hg1-2-v10018b' , 'hg1-2-v10018b' , 'hg1', '22'),
-              ('10103' , 'hg1-3-v10103'  , 'hg1-3-v10103'  , 'hg1', '22'),
-              ('10104' , 'hg1-4-v10104'  , 'hg1-4-v10104'  , 'hg1', '22'),
-              ('10105' , 'hg1-5-v10105'  , 'hg1-5-v10105'  , 'hg1', '22'),
-              ('10106' , 'hg1-6-v10106'  , 'hg1-6-v10106'  , 'hg1', '22'),
-              ('10107' , 'hg1-7-v10107'  , 'hg1-7-v10107'  , 'hg1', '22'),
-              ('10091' , 'hg1-8-v10091'  , 'hg1-8-v10091'  , 'hg1', '22'),
-              ('10109' , 'hg1-9-v10109'  , 'hg1-9-v10109'  , 'hg1', '22'),
-              ('graph' , 'hg1-10-v10110' , 'hg1-10-v10110' , 'hg1', '22'),
-
-              ('hg2'   , 'hg2'           , None            , 'hg2', '22'),
-              ('boss'  , 'hg2-1-v10101'  , 'hg2-1-v10101'  , 'hg2', '22'),
-              ('demo'  , 'hg2-2-vdemo'   , 'hg2-2-vdemo'   , 'hg2', '22'),
-              ('www'   , 'hg2-3-vwww'    , 'hg2-3-vwww'    , 'hg2', '22'),
-              ('boden' , 'hg2-4-boden'   , 'hg2-4-boden'   , 'hg2', '22'),
-              ('matrix', 'hg2-5-vmatrix' , 'hg2-5-vmatrix' , 'hg2', '22'),
-              ('flash' , 'hg2-7-vflash'  , 'hg2-7-vflash'  , 'hg2', '22'),
-              ('sbr'   , 'hg2-8-vsbr'    , 'hg2-8-vsbr'    , 'hg2', '22'),
-              ('10070' , 'hg2-9-v10070'  , 'hg2-9-v10070'  , 'hg2', '22'),
-              ('10063b', 'hg2-10-v10063b', 'hg2-10-v10063b', 'hg2', '22'),
-              ('ngibi' , 'hg2-11-vngibi' , 'hg2-11-vngibi' , 'hg2', '22'),
-              ('10083b', 'hg2-12-v10083b', 'hg2-12-v10083b', 'hg2', '22'),
-              ('10018b', 'hg2-13-v10018b', 'hg2-13-v10018b', 'hg2', '22'),
-              
               ('mdem'  , 'mdem'          , None            , 'mdem', '22'),
-              
-              ('m5786' , 'm5786'          , None            , 'm5786','22'),
-			  ('ptest' , '192.168.200.201', 'ptest'         , 'm5786','22'),
-
-              ('10069h', 'muli10069'          , None                  , 'muli10069', '22'),
-              ('10069' , 'muli10069-1-v10069a', 'muli10069-1-v10069a' , 'muli10069', '22'),
               ]
 
 try:
