@@ -93,7 +93,7 @@ def extend_user(u):
         raise
 
 def default_user():
-    return extend_user('u')
+    return extend_user('r')
 
 def is_host(alias, a):
     return alias[a]['virsh'] == None
