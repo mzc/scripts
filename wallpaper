@@ -28,7 +28,7 @@ wallpapers = ["1920-1200-32776",
               "Most-Famous-Characters-characters-",
               "Unstoppable-Player-unstoppable-player-football",]
 
-url_template = "http://jootix.com/download.php?file=upload/DesktopWallpapers/cache/%s.jpg&imageName=%s"
+url_template = "http://jootix.com/download.php?file=http://i.jootix.com/r/%s.jpg&imageName=%s"
 
 if len(sys.argv) < 2:
     sys.exit('Usage: %s resolution' % sys.argv[0])
