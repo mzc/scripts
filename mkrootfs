@@ -11,6 +11,7 @@ function get_busybox {
 }
 
 function config_busybox {
+    make -C "${busybox}" mrproper
     make -C "${busybox}" defconfig
 
     local busybox_config="${busybox}/.config"
@@ -72,9 +73,13 @@ function main {
     init
     if [ ! -d "${busybox}" ]; then
 	get_busybox
+    fi
+
+    if [ ! -d "${busybox}"/_install ]; then
 	config_busybox
 	compile_busybox
     fi
+
     create_root_fs
     exit 0
 }
