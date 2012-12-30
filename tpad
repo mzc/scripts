@@ -4,11 +4,23 @@ source utils.lib
 exec="/usr/bin/synclient"
 
 function usage {
-    die "Usage: $(basename $0) on/off"
+    die "Usage: $(basename $0) [on/off]"
 }
 
 function check_exec {
     [ -e "${exec}" ] || die "Cannot find ${exec}"
+}
+
+function touchpad_on {
+    $exec TouchpadOff=0
+}
+
+function touchpad_off {
+    $exec TouchpadOff=1
+}
+
+function touchpad_list {
+    $exec -l | grep TouchpadOff
 }
 
 function main {
@@ -16,10 +28,13 @@ function main {
 
     case "${cmd}" in
 	"on")
-	    synclient Touchpadoff=0
+	    touchpad_on
 	    ;;
 	"off")
-	    synclient Touchpadoff=1
+	    touchpad_off
+	    ;;
+	"list")
+	    touchpad_list
 	    ;;
 	*)
 	    usage
@@ -28,7 +43,10 @@ function main {
     exit 0
 }
 
-[ $# = '1' ] || usage "$0"
-cmd="$1"
+if [ $# = '1' ]; then
+    cmd="$1"
+else
+    cmd="list"
+fi
 
 main
