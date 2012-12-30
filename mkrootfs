@@ -2,6 +2,10 @@
 
 source utils.lib
 
+function usage {
+    die "Usage: $(basename "$0") filename_of_image"
+}
+
 function get_busybox {
     git clone git://git.busybox.net/busybox "${busybox}"
 }
@@ -75,7 +79,7 @@ function main {
     exit 0
 }
 
-[ $# = "1" ] || die "Usage: $(basename "$0") filename_of_image"
+[ $# = "1" ] || usage "$0"
 rootfs_img="$1"
 
 main
