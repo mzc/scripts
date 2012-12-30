@@ -1,0 +1,34 @@
+#!/bin/bash
+
+source utils.lib
+exec="/usr/bin/synclient"
+
+function usage {
+    die "Usage: $(basename $0) on/off"
+}
+
+function check_exec {
+    [ -e "${exec}" ] || die "Cannot find ${exec}"
+}
+
+function main {
+    check_exec
+
+    case "${cmd}" in
+	"on")
+	    synclient Touchpadoff=0
+	    ;;
+	"off")
+	    synclient Touchpadoff=1
+	    ;;
+	*)
+	    usage
+	    ;;
+    esac
+    exit 0
+}
+
+[ $# = '1' ] || usage "$0"
+cmd="$1"
+
+main
