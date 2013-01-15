@@ -10,7 +10,7 @@ wallpapers = ["1920-1200-32776",
               "unnamed--13012e7228",
               "unnamed--18c4e71e82",
               "unnamed--1a8c3506c2",
-              "unnamed--1d3e935035",
+              "unnamed--21ca4e79b9",
               "unnamed--41ee9a4c76",
               "unnamed--4d1e84bf9c",
               "unnamed--514eaff801",
@@ -19,14 +19,14 @@ wallpapers = ["1920-1200-32776",
               "unnamed--71e81de7fc",
               "unnamed--76c125a416",
               "unnamed--a3c9db8391",
+              "unnamed--a833466bfa",
               "unnamed--abc8251d04",
               "unnamed--c574b23be8",
               "unnamed--d182097033",
               "unnamed--ec40afa9f3",
               "unnamed--f1da805349",
               "unnamed--fa8e4f53ab",
-              "Most-Famous-Characters-characters-",
-              "Unstoppable-Player-unstoppable-player-football",]
+              "Most-Famous-Characters-characters-",]
 
 url_template = "http://jootix.com/download.php?file=http://i.jootix.com/r/%s.jpg&imageName=%s"
 
