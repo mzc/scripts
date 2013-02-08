@@ -5,41 +5,13 @@ import os
 import subprocess
 import collections
 
-#              alias     real              virsh             host   port
-alias_list = [('hm1'    , 'hm1'           , None            , 'hm1', '22'),
-              ('debqap' , 'hm1-0-vdebqap' , 'hm1-0-vdebqap' , 'hm1', '22'),
-              
-              ('hm2'    , 'hm2'           , None            , 'hm2', '22'),
-              ('debqa64', 'hm2-0-vdebqa64', 'hm2-0-vdebqa64', 'hm2', '22'),
-              ('qa64'   , 'hm2-1-vqa64'   , 'hm2-1-vqa64'   , 'hm2', '22'),
-              ('dev64'  , 'hm2-2-vdev64'  , 'hm2-2-vdev64'  , 'hm2', '22'),
-              ('debu164', 'hm2-5-vdebu164', 'hm2-5-vdebu164', 'hm2', '22'),
-
-              ('hm3'    , 'hm3'           , None            , 'hm3', '22'),
-              ('mail'   , 'hm3-0-mail-32' , 'hm3-0-mail-32' , 'hm3', '22'),
-              ('mow'    , 'hm3-1-mow-32'  , 'hm3-1-mow-32'  , 'hm3', '22'),
-              ('omo'    , 'hm3-2-omo-32'  , 'hm3-2-omo-32'  , 'hm3', '22'),
-              ('uhmp'   , 'hm3-3-hump-32' , 'hm3-3-uhmp-32' , 'hm3', '22'),
-              ('mib'    , 'hm3-4-mib-32'  , 'hm3-4-mib-32'  , 'hm3', '22'),
-              ('10000'  , 'hm3-5-v10000'  , 'hm3-5-v10000'  , 'hm3', '22'),
-              ('vbzr'   , 'hm3-6-vbzr'    , 'hm3-6-vbzr'    , 'hm3', '22'),
-              ('debqa'  , 'hm3-8-vdebqa'  , 'hm3-8-vdebqa'  , 'hm3', '22'),
-              ('mx'     , 'hm3-9-vmx'     , 'hm3-9-vmx'     , 'hm3', '22'),              
-              ('debu1'  , 'hm3-10-vdebu1' , 'hm3-10-vdebu1' , 'hm3', '22'),
-              ('mp'     , 'hm3-11-vmp'    , 'hm3-11-vmp'    , 'hm3', '22'),
-              
-              ('wwqa'   , 'hm3-12-vwwqa'  , 'hm3-12-vwwqa'  , 'hm3', '22'),
-              ('qap'    , 'hm3-13-vqap'   , 'hm3-13-vqap'   , 'hm3', '22'),
-              ('testp'  , 'hm3-14-vtestp' , 'hm3-14-vtestp' , 'hm3', '22'),
-              ('puppet' , 'hm3-15-vpuppet', 'hm3-14-vpuppet', 'hm3', '22'),
-              ('nagios' , 'hm3-17-vnagios', 'hm3-17-vnagios', 'hm3', '22'),
-
-              ('mdem'  , 'mdem'          , None            , 'mdem', '22'),
-              ]
+#               alias       real              virsh             host   port
+#alias_list = [('hm2'     , 'hm2'           , None            , 'hm2', '22'),
+#              ('vdebqa64', 'hm2-0-vdebqa64', 'hm2-0-vdebqa64', 'hm2', '22'),]
 
 try:
     import vt_secret
-    alias_list += vt_secret.alias_list
+    alias_list = vt_secret.alias_list
 except ImportError:
     pass
 
