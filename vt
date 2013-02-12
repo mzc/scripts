@@ -91,13 +91,13 @@ def usage(prog):
 
 def show_alias(alias):
     print 'Supported host shortcut:'
-    al = [a for a in alias.keys() if is_host(alias, a)]
+    al = sorted([a for a in alias.keys() if is_host(alias, a)])
     for i in range(0, len(al), 7):
         print al[i : i+7]
 
     print
     print 'Supported virtual shortcut:'
-    al = [a for a in alias.keys() if not is_host(alias, a)]
+    al = sorted([a for a in alias.keys() if not is_host(alias, a)])
     for i in range(0, len(al), 7):
         print al[i : i+7]
 
